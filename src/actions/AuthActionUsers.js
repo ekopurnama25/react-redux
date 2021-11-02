@@ -14,7 +14,7 @@ export const AuthActionUsers = (email, password) => async (dispatch) => {
                 payload: { user: data },
             });
 
-            return Promise.resolve();
+            return Promise.resolve(data);
         },
         (error) => {
             const message =
