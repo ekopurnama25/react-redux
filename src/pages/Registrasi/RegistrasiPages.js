@@ -6,43 +6,38 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useToasts } from 'react-toast-notifications';
 import { RegistrasiActionUsers } from "../../actions/RegistrasiActionUsers";
 import registrasiSchame from '../../validations/validationRegister';
+
 const RegistrasiPages = () => {
-  // const registrasiInitial = {
-  //   username: "",
-  //   email: "",
-  //   password: ""
-  // };
 
-  //const [registrasiUsers, SetRegistrasi] = useState(registrasiInitial);
+  const registrasiInitial = {
+    username: "",
+    email: "",
+    password: ""
+  };
 
-  // const handleInputChange = event => {
-  //   const { name, value } = event.target;
-  //   SetRegistrasi({ ...registrasiUsers, [name]: value });
-  // };
+  const dispatch = useDispatch();
+
   const { addToast } = useToasts();
+
   const SaveRegistrasiUser = (data) => {
     const { username, email, password } = data;
     dispatch(RegistrasiActionUsers(username, email, password))
       .then(data => {
-        register({
-          username: data.username,
-          email: data.email,
-          password: data.password
-        });
-          addToast('Success Registrations', { appearance: 'success', autoDismiss: true, });
-          console.log(data);
-          reset();
+        addToast('Success Registrations', { appearance: 'success', autoDismiss: true, });
+        reset(registrasiInitial);
+        console.log(data);
       })
-      .catch(e => {
-          addToast('Failed Registrations', { appearance: 'error', autoDismiss: true, });
-          console.log(e);
+      .catch(error => {
+        addToast('Failed Registrations', { appearance: 'error', autoDismiss: true, });
+        reset(registrasiInitial);
+        console.log(error);
       });
   };
-  const dispatch = useDispatch();
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(registrasiSchame),
   });
+
   return (
     <div>
       <div className="bg-gray-200 min-h-screen flex justify-center items-center">
@@ -55,7 +50,7 @@ const RegistrasiPages = () => {
               <input type="text" className="form-control w-full border-2 border-blue-500 p-2 rounded outline-none focus:border-blue-800"
                 placeholder="example123"
                 id="username"
-                {...register("username", { required: true })}
+                {...register('username', { required: true })}
                 required
                 name="username"></input>
               <div className="text-xs text-red-500">{errors.username?.message}</div>
@@ -66,7 +61,7 @@ const RegistrasiPages = () => {
                 placeholder="example@domain.com"
                 id="email"
                 required
-                {...register("email", { required: true })}
+                {...register('email', { required: true })}
                 name="email"
               ></input>
               <div className="text-xs text-red-500">{errors.email?.message}</div>
@@ -76,7 +71,7 @@ const RegistrasiPages = () => {
               <input type="password" className="form-control w-full border-2 border-blue-500 p-2 rounded outline-none focus:border-blue-800"
                 placeholder="password"
                 id="password"
-                {...register("password", { required: true })}
+                {...register('password', { required: true })}
                 required
                 name="password"
               ></input>
@@ -88,7 +83,7 @@ const RegistrasiPages = () => {
             </div>
             <div>
               <button onClick={handleSubmit(SaveRegistrasiUser)} className="transition delay-150 duration-300 ease-in-out block w-full bg-purple-500 hover:bg-purple-700 transform hover:-translate-y-1 hover:scale-110 p-3 rounded text-white">Sign Up</button>
-              <Link to="/login" className="block w-full rounded text-xs text-indigo-600 p-5 text-center">Login Click here ?</Link>
+              <Link to="/signin" className="block w-full rounded text-xs text-indigo-600 p-5 text-center">Login Click here ?</Link>
             </div>
           </div>
         </div>

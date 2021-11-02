@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Login from "./pages/Login/Login";
+import SignInPages from "./pages/Login/SignInPages";
 import RegistrasiPages from "./pages/Registrasi/RegistrasiPages";
 
 
@@ -8,8 +8,8 @@ function App() {
     <div className='App'>
       <Router>
         <Switch>
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/rgsusers' component={RegistrasiPages} />
+          <Route exact path='/signin' component={SignInPages} />
+          <Route exact path='/registrationuser' component={RegistrasiPages} />
         </Switch>
       </Router>
     </div>

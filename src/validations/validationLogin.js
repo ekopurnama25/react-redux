@@ -1,9 +1,6 @@
 import * as Yup from "yup";
 
-const registrasiSchame = Yup.object().shape({
-    username: Yup.string()
-        .required("Username is required")
-        .min(8, "Username must be 8 characters at minimum"),
+const loginSchame = Yup.object().shape({
     email: Yup.string()
         .email("Invalid email address format")
         .required("Email is required"),
@@ -12,4 +9,4 @@ const registrasiSchame = Yup.object().shape({
         .min(8, "Password must be 8 characters at minimum"),
 });
 
-export default registrasiSchame;
+export default loginSchame;
