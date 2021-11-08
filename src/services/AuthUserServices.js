@@ -2,11 +2,12 @@ import axios from "../http-common";
 
 const AuthUsers = data => {
   return axios.post("/auth", data)
-  .then((response) => {
-    if (response.data.accessToken) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+  .then((data) => {
+    if (data.accessToken) {
+      localStorage.setItem("users", JSON.stringify(data.data)); 
     }
-    return response.data;
+    console.log(data);
+    return data;
   });
 };
 

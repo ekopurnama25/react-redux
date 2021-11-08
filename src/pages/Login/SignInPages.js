@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useToasts } from 'react-toast-notifications';
@@ -17,17 +17,37 @@ const SignInPages = () => {
     resolver: yupResolver(loginSchame),
   });
 
-  const dispatch = useDispatch();
+  const dispatch  = useDispatch();
+
+  const history = useHistory();
 
   const { addToast } = useToasts();
 
   const AuthHorizationUsers = (data) => {
     const { email, password } = data;
-    dispatch(AuthActionUsers( email, password))
+    dispatch(AuthActionUsers(email, password))
       .then(data => {
-        addToast('Success Registrations', { appearance: 'success', autoDismiss: true, });
-        reset(Login);
-        console.log(data);
+        addToast('Login Succsessfully', { appearance: 'success', autoDismiss: true, });
+        if (data) {
+          if (data.users.roles.roles === "Admin") {
+            console.log({
+              roles: "admin",
+              token: data
+            });
+            history.push("/admin");
+            window.location.reload();
+          }
+        
+          else if (data.users.roles.roles === "Users") {
+            console.log({
+              roles: "users",
+              token: data
+            });
+            history.push("/users");
+            window.location.reload();
+          }
+        }
+        //console.log();
       })
       .catch(error => {
         addToast('Failed Registrations', { appearance: 'error', autoDismiss: true, });
@@ -37,6 +57,7 @@ const SignInPages = () => {
   };
 
   return (
+    
     <div>
       <div className="bg-gray-200 min-h-screen flex justify-center items-center">
         <div className="bg-white p-8 rounded shadow-2x1 w-2/6">
@@ -49,6 +70,7 @@ const SignInPages = () => {
                 placeholder="example@domain.com"
                 id="emailInput"
                 {...register('email', { required: true })}
+                required
               ></input>
               <div className="text-xs text-red-500">{errors.email?.message}</div>
             </div>
@@ -57,8 +79,9 @@ const SignInPages = () => {
               <input type="password" className="w-full border-2 border-blue-500 p-2 rounded outline-none focus:border-blue-800"
                 placeholder="password"
                 {...register('password', { required: true })}
+                required
                 id="passwordInput"></input>
-                <div className="text-xs text-red-500">{errors.password?.message}</div>
+              <div className="text-xs text-red-500">{errors.password?.message}</div>
             </div>
             <div className="flex items-center">
               <input type="checkbox" id="agree"></input>

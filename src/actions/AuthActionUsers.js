@@ -1,40 +1,26 @@
 import {
     AUTHENTICATED,
-    NOT_AUTHENTICATED,
-    SET_MESSAGE
+    NOT_AUTHENTICATED
 } from "./types";
 
 import AuthUsersServices from "../services/AuthUserServices";
 
 export const AuthActionUsers = (email, password) => async (dispatch) => {
-    return AuthUsersServices.AuthUsers(email, password).then(
-        (data) => {
-            dispatch({
-                type: AUTHENTICATED,
-                payload: { user: data },
-            });
+    const res = await AuthUsersServices.AuthUsers({ email, password });
+    try {
+        dispatch({
+            type: AUTHENTICATED,
+            payload: { user: res.data },
+        });
 
-            return Promise.resolve(data);
-        },
-        (error) => {
-            const message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+        return Promise.resolve(res.data);
 
-            dispatch({
-                type: NOT_AUTHENTICATED,
-            });
+    } catch (err) {
+        dispatch({
+            type: NOT_AUTHENTICATED,
+        });
 
-            dispatch({
-                type: SET_MESSAGE,
-                payload: message,
-            });
-
-            return Promise.reject();
-        }
-    );
+        return Promise.reject(err);
+    }
 };
 
