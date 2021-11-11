@@ -34,7 +34,7 @@ const SignInPages = () => {
               roles: "admin",
               token: data
             });
-            history.push("/admin");
+            history.push("/admin", data);
             window.location.reload();
           }
         
@@ -43,7 +43,7 @@ const SignInPages = () => {
               roles: "users",
               token: data
             });
-            history.push("/users");
+            history.push("/users", data);
             window.location.reload();
           }
         }

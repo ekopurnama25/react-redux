@@ -6,7 +6,6 @@ const AuthUsers = data => {
     if (data.accessToken) {
       localStorage.setItem("users", JSON.stringify(data.data)); 
     }
-    console.log(data);
     return data;
   });
 };

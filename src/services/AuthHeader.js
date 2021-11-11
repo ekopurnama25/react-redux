@@ -1,9 +1,13 @@
+//import AuthUsersServices from "./AuthUserServices";
 export default function authHeader() {
-    const user = JSON.parse(localStorage.getItem("user"));
-  
-    if (user && user.accessToken) {
-      return { "x-access-token": user.accessToken };
-    } else {
-      return {};
-    }
+  const users = localStorage.getItem("users");
+
+  console.log(users);
+
+  // if (user && user.accessToken) {
+  //   return { authorization: 'Bearer ' + user.accessToken };
+  // } else {
+  //   console.log(user);
+  //   return {};
+  // }
 }

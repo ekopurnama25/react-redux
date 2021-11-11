@@ -1,31 +1,41 @@
 import {
     AUTHENTICATED,
-    NOT_AUTHENTICATED
-} from "../actions/types";
-
-const user = JSON.parse(localStorage.getItem("user"));
-
-const initialState = user
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user: null };
-
-function RegistrasiUsersReducers(authUsers = initialState, action) {
+    NOT_AUTHENTICATED,
+    LOGOUT,
+  } from "../actions/types";
+  
+  const users = JSON.parse(localStorage.getItem('users'));
+  
+  const initialState = users
+    ? { isLoggedIn: true, users }
+    : { isLoggedIn: false, users: null };
+  
+  // eslint-disable-next-line
+  function AuthUsersReducers (authUser = initialState, action) {
     const { type, payload } = action;
-
+  
     switch (type) {
-        case AUTHENTICATED:
-            return {
-                ...authUsers,
-                isLoggedIn: true,
-                user: payload,
-            };
-        case NOT_AUTHENTICATED:
-            return {
-                ...authUsers,
-                isLoggedIn: false,
-                user: null,
-            };
-    };
-};
+      case AUTHENTICATED:
+        return {
+          ...authUser,
+          isLoggedIn: true,
+          users: payload.users,
+        };
+      case NOT_AUTHENTICATED:
+        return {
+          ...authUser,
+          isLoggedIn: false,
+          users: null,
+        };
+      case LOGOUT:
+        return {
+          ...authUser,
+          isLoggedIn: false,
+          users: null,
+        };
+      default:
+        return authUser;
+    }
+  }
 
-export default RegistrasiUsersReducers;
+  export default AuthUsersReducers;
